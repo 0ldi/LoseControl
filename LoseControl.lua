@@ -75,9 +75,8 @@ local spellIds = {
 	["Revenge Stun"] = CC, -- Revenge Stun
 	["Concussion Blow"] = CC, -- Concussion Blow
 	["Charge"] = CC, -- Charge
-	["Frostbrand Weapon"] = Root, -- Frostbrand Weapon
-	--Shaman
-	["Cripple"] = Snare, -- Cripple
+	--Shaman	
+	["Frostbrand Weapon"] = Snare, -- Frostbrand Weapon
 	["Frost Shock"] = Snare, -- Frost Shock
 	["Earthbind"] = Snare, -- Earthbind
 	["Earthbind Totem"] = Snare, -- Earthbind Totem
@@ -94,7 +93,6 @@ local spellIds = {
 	["Chilled"] = Snare, -- Chilled
 	["Dazed"] = Snare, -- Dazed
 	["Spell Lock"] = Silence, -- Spell Lock
-	["Chilled"] = Snare, -- Chilled
 	
 }
 
