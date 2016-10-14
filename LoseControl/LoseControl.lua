@@ -18,6 +18,9 @@ local spellIds = {
 	["Feral Charge Effect"] = Root, -- Feral Charge Effect
 	-- Hunter
 	["Freezing Trap"] = CC, -- Freezing Trap
+	["Freezing Trap Effect"] = CC, -- Freezing Trap Effect
+	["Frost Trap Aura"] = CC, -- Frost Trap Aura
+	["Frost Trap"] = CC, -- Frost Trap
 	["Intimidation"] = CC, -- Intimidation
 	["Scare Beast"] = CC, -- Scare Beast
 	["Scatter Shot"] = CC, -- Scatter Shot
@@ -27,6 +30,7 @@ local spellIds = {
 	["Improved Wing Clip"] = Root, -- Improved Wing Clip
 	["Entrapment"] = Root, -- Entrapment
 	["Wing Clip"] = Snare, -- Wing Clip
+	["Concussive Shot"] = Snare, -- Concussive Shot
 	-- Mage
 	["Frost Nova"] = Root, -- Frost Nova
 	["Polymorph"] = CC, -- Polymorph
@@ -66,6 +70,7 @@ local spellIds = {
 	["Pyroclasm"] = CC, -- Pyroclasm
 	["Curse of Exhaustion"] = Snare, -- Curse of Exhaustion
 	["Aftermath"] = Snare, -- Aftermath
+	["Spell Lock"] = Silence, -- Spell Lock
 	-- Warrior
 	["Charge Stun"] = CC, -- Charge Stun
 	["Intercept Stun"] = CC, -- Intercept Stun
@@ -91,9 +96,7 @@ local spellIds = {
 	["Boar Charge"] = Root, -- Boar Charge
 	["Cripple"] = Snare, -- Cripple
 	["Chilled"] = Snare, -- Chilled
-	["Dazed"] = Snare, -- Dazed
-	["Spell Lock"] = Silence, -- Spell Lock
-	
+	["Dazed"] = Snare, -- Dazed	
 }
 
 function LCPlayer_OnLoad()	
