@@ -9,49 +9,50 @@ local PvE     = "PvE"
 
 local spellIds = {
 	-- Druid
-	["Bash"] = CC, -- Bash
-	["Feral Charge Efect"] = Root, -- Feral Charge Efect
 	["Hibernate"] = CC, -- Hibernate
-	["Pounce"] = CC, -- Pounce
+	["Starfire Stun"] = CC, -- Starfire
 	["Entangling Roots"] = Root, -- Entangling Roots
-	["Starfire Stun"] = CC, -- Starfire Stun
-	["Feral Charge Effect"] = Root, -- Feral Charge Effect
+	["Bash"] = CC, -- Bash
+	["Pounce Bleed"] = CC, -- Pounce
+	["Feral Charge Effect"] = Root, -- Feral Charge
 	-- Hunter
-	["Freezing Trap"] = CC, -- Freezing Trap
-	["Freezing Trap Effect"] = CC, -- Freezing Trap Effect
-	["Frost Trap Aura"] = CC, -- Frost Trap Aura
-	["Frost Trap"] = CC, -- Frost Trap
 	["Intimidation"] = CC, -- Intimidation
 	["Scare Beast"] = CC, -- Scare Beast
 	["Scatter Shot"] = CC, -- Scatter Shot
-	["Wyvern Sting"] = CC, -- Wyvern Sting; requires a hack to be removed later
 	["Improved Concussive Shot"] = CC, -- Improved Concussive Shot
+	["Concussive Shot"] = Snare, -- Concussive Shot
+	["Freezing Trap Effect"] = CC, -- Freezing Trap
+	["Freezing Trap"] = CC, -- Freezing Trap
+	["Frost Trap Aura"] = Root, -- Freezing Trap
+	["Frost Trap"] = Root, -- Frost Trap
+	["Entrapment"] = Root, -- Entrapment
+	["Wyvern Sting"] = CC, -- Wyvern Sting; requires a hack to be removed later
 	["Counterattack"] = Root, -- Counterattack
 	["Improved Wing Clip"] = Root, -- Improved Wing Clip
-	["Entrapment"] = Root, -- Entrapment
 	["Wing Clip"] = Snare, -- Wing Clip
-	["Concussive Shot"] = Snare, -- Concussive Shot
 	["Boar Charge"] = Root, -- Boar Charge
 	-- Mage
-	["Frost Nova"] = Root, -- Frost Nova
-	["Polymorph"] = CC, -- Polymorph
-	["Frostbite"] = Root, -- Frostbite
-	["Freeze"] = Root, -- Freeze
-	["Cone of Cold"] = Snare, -- Cone of Cold	
-	["Counterspell - Silenced"] = Silence, -- Counterspell - Silenced
+	["Polymorph"] = CC, -- Polymorph: Sheep
+	["Polymorph: Turtle"] = CC, -- Polymorph: Turtle
+	["Polymorph: Pig"] = CC, -- Polymorph: Pig
+	["Polymorph: Cow"] = CC, -- Polymorph: Cow
+	["Polymorph: Chicken"] = CC, -- Polymorph: Chicken
+	["Counterspell - Silenced"] = Silence, -- Counterspell
 	["Impact"] = CC, -- Impact
-	["Chill"] = Snare, -- Chill
 	["Blast Wave"] = Snare, -- Blast Wave
+	["Frostbite"] = Root, -- Frostbite
+	["Frost Nova"] = Root, -- Frost Nova
 	["Frostbolt"] = Snare, -- Frostbolt
+	["Cone of Cold"] = Snare, -- Cone of Cold
+	["Chilled"] = Snare, -- Improved Blizzard + Ice armor
 	-- Paladin
 	["Hammer of Justice"] = CC, -- Hammer of Justice
 	["Repentance"] = CC, -- Repentance
-	["Seal of Justice"] = CC, -- Seal of Justice
 	-- Priest
 	["Mind Control"] = CC, -- Mind Control
 	["Psychic Scream"] = CC, -- Psychic Scream
-	["Silence"] = Silence, -- Silence
 	["Blackout"] = CC, -- Blackout
+	["Silence"] = Silence, -- Silence
 	["Mind Flay"] = Snare, -- Mind Flay
 	-- Rogue
 	["Blind"] = CC, -- Blind
@@ -59,29 +60,28 @@ local spellIds = {
 	["Gouge"] = CC, -- Gouge
 	["Kidney Shot"] = CC, -- Kidney shot; the buff is 30621
 	["Sap"] = CC, -- Sap
-	["Kick - Silenced"] = Silence, -- Kick - Silenced
+	["Kick - Silenced"] = Silence, -- Kick
 	["Crippling Poison"] = Snare, -- Crippling Poison
 	-- Warlock
 	["Death Coil"] = CC, -- Death Coil
 	["Fear"] = CC, -- Fear
 	["Howl of Terror"] = CC, -- Howl of Terror
+	["Curse of Exhaustion"] = Snare, -- Curse of Exhaustion
+	["Pyroclasm"] = CC, -- Pyroclasm
+	["Aftermath"] = Snare, -- Aftermath
 	["Seduction"] = CC, -- Seduction
+	["Spell Lock"] = Silence, -- Spell Lock
 	["Inferno Effect"] = CC, -- Inferno Effect
 	["Inferno"] = CC, -- Inferno
-	["Pyroclasm"] = CC, -- Pyroclasm
-	["Curse of Exhaustion"] = Snare, -- Curse of Exhaustion
-	["Aftermath"] = Snare, -- Aftermath
-	["Spell Lock"] = Silence, -- Spell Lock
 	["Cripple"] = Snare, -- Cripple
 	-- Warrior
 	["Charge Stun"] = CC, -- Charge Stun
 	["Intercept Stun"] = CC, -- Intercept Stun
 	["Intimidating Shout"] = CC, -- Intimidating Shout
-	["Piercing Howl"] = Snare, -- Piercing Howl
-	["Shield Bash - Silenced"] = Silence, -- Shield Bash - Silenced
 	["Revenge Stun"] = CC, -- Revenge Stun
 	["Concussion Blow"] = CC, -- Concussion Blow
-	["Charge"] = CC, -- Charge
+	["Piercing Howl"] = Snare, -- Piercing Howl
+	["Shield Bash - Silenced"] = Silence, -- Shield Bash - Silenced
 	--Shaman	
 	["Frostbrand Weapon"] = Snare, -- Frostbrand Weapon
 	["Frost Shock"] = Snare, -- Frost Shock
@@ -95,8 +95,10 @@ local spellIds = {
 	["Gnomish Mind Control Cap"] = CC, -- Gnomish Mind Control Cap
 	["Reckless Charge"] = CC, -- Reckless Charge
 	["Sleep"] = CC, -- Sleep
-	["Chilled"] = Snare, -- Chilled
-	["Dazed"] = Snare, -- Dazed	
+	["Dazed"] = Snare, -- Dazed
+	["Freeze"] = Root, -- Freeze
+	["Chill"] = Snare, -- Chill
+	["Charge"] = CC, -- Charge
 }
 
 function LCPlayer_OnLoad()	
