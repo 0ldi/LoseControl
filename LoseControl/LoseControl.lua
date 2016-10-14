@@ -31,6 +31,7 @@ local spellIds = {
 	["Entrapment"] = Root, -- Entrapment
 	["Wing Clip"] = Snare, -- Wing Clip
 	["Concussive Shot"] = Snare, -- Concussive Shot
+	["Boar Charge"] = Root, -- Boar Charge
 	-- Mage
 	["Frost Nova"] = Root, -- Frost Nova
 	["Polymorph"] = CC, -- Polymorph
@@ -71,6 +72,7 @@ local spellIds = {
 	["Curse of Exhaustion"] = Snare, -- Curse of Exhaustion
 	["Aftermath"] = Snare, -- Aftermath
 	["Spell Lock"] = Silence, -- Spell Lock
+	["Cripple"] = Snare, -- Cripple
 	-- Warrior
 	["Charge Stun"] = CC, -- Charge Stun
 	["Intercept Stun"] = CC, -- Intercept Stun
@@ -93,8 +95,6 @@ local spellIds = {
 	["Gnomish Mind Control Cap"] = CC, -- Gnomish Mind Control Cap
 	["Reckless Charge"] = CC, -- Reckless Charge
 	["Sleep"] = CC, -- Sleep
-	["Boar Charge"] = Root, -- Boar Charge
-	["Cripple"] = Snare, -- Cripple
 	["Chilled"] = Snare, -- Chilled
 	["Dazed"] = Snare, -- Dazed	
 }
