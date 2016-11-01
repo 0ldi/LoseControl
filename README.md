@@ -1,10 +1,10 @@
-#LoseControl
+# LoseControl
 LoseControl makes it easy to see the duration of crowd control spells by displaying them in a dedicated icon onscreen.
-#Original creator
+# Original creator
 [Schaka](https://github.com/Schaka)
-#Changes
+# Changes
 added almost all CC(pvp).
-#Instalation
+# Instalation
 Put "LoseControl" folder to "World of Warcraft\Interface\AddOns"
-#Showcase
+# Showcase
 ![](http://cdn-wow.mmoui.com/preview/pvw20393.jpg)
