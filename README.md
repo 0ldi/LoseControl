@@ -9,7 +9,7 @@ LoseControl makes it easy to see the duration of crowd control spells by display
 
 # Changelog
 Added almost all CC (for pvp)   
-Based on LoseControl 3.31
+Based on `LoseControl 3.31`
 
 # Instalation
-Put "LoseControl" folder to `World of Warcraft\Interface\AddOns`
+Put `LoseControl` folder to `World of Warcraft\Interface\AddOns`
