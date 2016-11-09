@@ -8,7 +8,8 @@ LoseControl makes it easy to see the duration of crowd control spells by display
 ![](http://cdn-wow.mmoui.com/preview/pvw20393.jpg)
 
 # Changelog
-Added almost all CC (for pvp)   
+* Added almost all CC (for pvp)   
+
 Based on `LoseControl 3.31`
 
 # Instalation
