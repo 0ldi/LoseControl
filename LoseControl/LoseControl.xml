@@ -10,7 +10,7 @@
 			</OnLoad>
 		</Scripts> 
 	</GameTooltip>
-	<Frame name="LoseControlPlayer" hidden="false" inherits="ActionButtonTemplate">
+	<Frame name="LoseControlPlayer" hidden="false" inherits="ActionButtonTemplate" movable="true">
 		<Scripts>
 			<OnLoad>
 				LCPlayer_OnLoad();

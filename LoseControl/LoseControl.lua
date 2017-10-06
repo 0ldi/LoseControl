@@ -7,6 +7,8 @@ local Snare   = "Snare"
 local Immune  = "Immune"
 local PvE     = "PvE"
 
+local Prio = {CC,Silence,Disarm,Root,Snare}
+
 local spellIds = {
 	-- Druid
 	["Hibernate"] = CC, -- Hibernate
@@ -101,12 +103,38 @@ local spellIds = {
 	["Charge"] = CC, -- Charge
 }
 
+local wipe = function(t)
+	for k,v in pairs(t) do
+		t[k]=nil
+	end
+	return t
+end
+
+local ToggleDrag = function()
+  if not LoseControlPlayer:IsMouseEnabled() then
+  	LoseControlPlayer:EnableMouse(true)
+  	LoseControlPlayer:RegisterForDrag("RightButton")
+  	LoseControlPlayer:SetScript("OnDragStart",function() this:StartMoving() end)
+  	LoseControlPlayer:SetScript("OnDragStop",function() this:StopMovingOrSizing() end)
+  	LoseControlPlayer.texture:SetTexture(1,0,0,1)
+  	LoseControlPlayer:Show()
+  	DEFAULT_CHAT_FRAME:AddMessage("LoseControl: Drag with right button")
+  else
+  	LoseControlPlayer:RegisterForDrag(nil)
+  	LoseControlPlayer:EnableMouse(false)
+  	LoseControlPlayer:SetScript("OnDragStart",nil)
+  	LoseControlPlayer:SetScript("OnDragStop",nil)
+  	LoseControlPlayer.texture:SetTexture(nil)
+  	LoseControlPlayer:Hide()
+  	DEFAULT_CHAT_FRAME:AddMessage("LoseControl: Saved new position")
+  end
+end
+
 function LCPlayer_OnLoad()	
-	this:SetHeight(50)
-	this:SetWidth(50)
-	this:SetPoint("CENTER", 0, 0)
+	this:SetPoint("CENTER", 0, -60)
 	this:RegisterEvent("UNIT_AURA")
 	this:RegisterEvent("PLAYER_AURAS_CHANGED")
+	this:RegisterEvent("VARIABLES_LOADED")
 
 	this.texture = this:CreateTexture(this, "BACKGROUND")
 	this.texture:SetAllPoints(this)
@@ -114,38 +142,92 @@ function LCPlayer_OnLoad()
 	this.cooldown:SetAllPoints(this) 
 	this.maxExpirationTime = 0
 	this:Hide()
+	this:EnableMouse(false)
+	this:SetUserPlaced(true)
 end
 
+local trackedSpells = {}
+local cachedTextures = {}
 function LCPlayer_OnEvent()
-	local spellFound = false
+	if event == "VARIABLES_LOADED" then
+		LoseControlDB = LoseControlDB or {size=40}
+		this:SetHeight(LoseControlDB.size)
+		this:SetWidth(LoseControlDB.size)
+		if IsAddOnLoaded("pfUI") then
+			if pfUI.api ~= nil and type(pfUI.api.CreateBackdrop) == "function" then
+				pfUI.api.CreateBackdrop(this)
+				this:UnregisterEvent("VARIABLES_LOADED")
+			end
+		end
+		return
+	end
+	trackedSpells = wipe(trackedSpells)
+	local spellFound
 	for i=1, 16 do -- 16 is enough due to HARMFUL filter
 		local texture = UnitDebuff("player", i)
 		LCTooltip:ClearLines()
 		LCTooltip:SetUnitDebuff("player", i)
 		local buffName = LCTooltipTextLeft1:GetText()
-		
-		if spellIds[buffName] then
-			spellFound = true
-			for j=0, 31 do
-				local buffTexture = GetPlayerBuffTexture(j)
-				if texture == buffTexture then
-					local expirationTime = GetPlayerBuffTimeLeft(j)
-					this:Show()
-					this.texture:SetTexture(buffTexture)
-					this.cooldown:SetModelScale(1)
-					if this.maxExpirationTime <= expirationTime then
-						CooldownFrame_SetTimer(this.cooldown, GetTime(), expirationTime, 1)
-						this.maxExpirationTime = expirationTime
-					end
-					return
-				end
-			end		
+		if spellIds[buffName] ~= nil then
+			if cachedTextures[buffName] == nil then cachedTextures[buffName] = texture end
+			trackedSpells[table.getn(trackedSpells)+1] = buffName
 		end
 	end
-	if spellFound == false then
+	if table.getn(trackedSpells) > 1 then
+		table.sort(trackedSpells,function(a,b)
+				if Prio[spellIds[a]]~=nil and Prio[spellIds[b]]~=nil then
+				return Prio[spellIds[a]] < Prio[spellIds[b]] end
+				return a > b
+			end)
+	end
+	spellFound = trackedSpells[1] -- highest prio spell
+	if (spellFound) then
+		for j=0, 31 do
+			local buffTexture = GetPlayerBuffTexture(j)
+			if cachedTextures[spellFound] == buffTexture then
+				local expirationTime = GetPlayerBuffTimeLeft(j)
+				this:Show()
+				this.texture:SetTexture(buffTexture)
+				this.cooldown:SetModelScale(this:GetEffectiveScale() or 1)
+				if this.maxExpirationTime <= expirationTime then
+					CooldownFrame_SetTimer(this.cooldown, GetTime(), expirationTime, 1)
+					this.maxExpirationTime = expirationTime
+				end
+				return
+			end
+		end	
+	end
+	if spellFound == nil then
 		this.maxExpirationTime = 0
 		this:Hide()
 	end
+end
+
+SLASH_LOSECONTROL1 = "/losecontrol"
+SlashCmdList["LOSECONTROL"] = function(options)
+  if not (options) or options == "" then
+  	DEFAULT_CHAT_FRAME:AddMessage("/losecontrol unlock : toggles lock for dragging")
+  	DEFAULT_CHAT_FRAME:AddMessage("/losecontrol size x : sets icons size to x (10-50)")
+  else
+    local option = {}
+    for opt in string.gfind(options,"([^ ]+)") do
+      table.insert(option,opt)
+    end
+    if table.getn(option) > 0 then
+    	local command = string.lower(table.remove(option,1))
+    	-- TODO: future options would go here (scale, prio, filter etc)
+    	if command == "unlock" or command == "lock" then
+    		ToggleDrag()
+    	elseif command == "size" then
+    		local newsize = tonumber(table.remove(option,1))
+    		if (newsize) and newsize >= 10 and newsize <= 50 then
+    			LoseControlPlayer:SetWidth(newsize)
+    			LoseControlPlayer:SetHeight(newsize)
+    			LoseControlDB.size = newsize
+    		end
+    	end
+    end
+  end
 end
 
 function LCTarget_OnLoad()
